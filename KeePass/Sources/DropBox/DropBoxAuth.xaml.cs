@@ -2,6 +2,7 @@
 using System.Net;
 using System.Windows;
 using DropNet;
+using DropNet.Exceptions;
 using KeePass.Utils;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
@@ -33,10 +34,10 @@ namespace KeePass.Sources.DropBox
                 this.NavigateTo<List>(
                     "token={0}&secret={1}&folder={2}",
                     x.Token, x.Secret, folder);
-            }, ex => ShowError());
+            }, ex => ShowError(ex));
         }
 
-        private void ShowError()
+        private void ShowError(DropboxException dropboxException)
         {
             Dispatcher.BeginInvoke(() =>
                 MessageBox.Show(
@@ -65,7 +66,7 @@ namespace KeePass.Sources.DropBox
 
                 Dispatcher.BeginInvoke(() =>
                     browser.Navigate(new Uri(url)));
-            }, ex => ShowError());
+            }, ex => ShowError(ex));
         }
 
         private void browser_Navigating(object sender, NavigatingEventArgs e)
